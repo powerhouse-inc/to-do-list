@@ -1,0 +1,59 @@
+scalar Amount_Tokens
+scalar EthereumAddress
+scalar Amount_Percentage
+scalar EmailAddress
+scalar Date
+scalar DateTime
+scalar URL
+scalar Amount_Money
+scalar OLabel
+scalar Currency
+scalar PHID
+scalar OID
+scalar BigInt
+type ToDoListState {
+  items: [ToDoItem!]!
+  stats: ToDoListStats!
+}
+
+type ToDoList @entity {
+  id: ID!
+  items: [ToDoItem!]! @derivedFrom(field: "list")
+  total: Int!
+  checked: Int!
+  unchecked: Int!
+}
+
+type ToDoItem @entity {
+  id: ID!
+  list: ToDoList!
+  text: String!
+  checked: Boolean!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+type ToDoListStats {
+  total: Int!
+  checked: Int!
+  unchecked: Int!
+}
+
+
+
+# to_do_list
+
+input AddTodoItemInput {
+    id: ID!
+    text: String!
+}
+
+input UpdateTodoItemInput {
+  id: ID!
+  text: String
+  checked: Boolean
+}
+
+input DeleteTodoItemInput {
+  id: ID!
+}
