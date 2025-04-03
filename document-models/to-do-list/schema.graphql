@@ -10,7 +10,7 @@ scalar OLabel
 scalar Currency
 scalar PHID
 scalar OID
-scalar BigInt
+
 type ToDoListState {
   items: [ToDoItem!]!
   stats: ToDoListStats!
@@ -29,8 +29,8 @@ type ToDoItem @entity {
   list: ToDoList!
   text: String!
   checked: Boolean!
-  createdAt: BigInt!
-  updatedAt: BigInt!
+  createdAt: Int!
+  updatedAt: Int!
 }
 
 type ToDoListStats {
