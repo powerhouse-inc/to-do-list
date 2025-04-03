@@ -1,18 +1,13 @@
-import { EditorProps } from "document-model/document";
-import {
-  ToDoListState,
-  ToDoListAction,
-  ToDoListLocalState,
-  ToDoItem,
-  actions,
-} from "../../document-models/to-do-list";
 import { useState } from "react";
+import type { EditorProps } from "document-model";
+import {
+  type ToDoListDocument,
+  actions,
+  type ToDoItem,
+} from "../../document-models/to-do-list/index.js";
+import { StringField } from "@powerhousedao/design-system/scalars";
 
-export type IProps = EditorProps<
-  ToDoListState,
-  ToDoListAction,
-  ToDoListLocalState
->;
+export type IProps = EditorProps<ToDoListDocument>;
 
 export default function Editor(props: IProps) {
   const { document, dispatch, context } = props;
@@ -42,13 +37,13 @@ export default function Editor(props: IProps) {
               setTodoItem(value.target.value);
             }}
             value={todoItem}
-            onKeyPress={(event) => {
+            onKeyDown={(event) => {
               if (event.key === "Enter") {
                 dispatch(
                   actions.addTodoItem({
                     id: Math.random().toString(),
                     text: todoItem,
-                  }),
+                  })
                 );
                 setTodoItem("");
               }
@@ -60,7 +55,7 @@ export default function Editor(props: IProps) {
                 actions.addTodoItem({
                   id: Math.random().toString(),
                   text: todoItem,
-                }),
+                })
               );
               setTodoItem("");
             }}
@@ -91,7 +86,7 @@ export default function Editor(props: IProps) {
                           actions.updateTodoItem({
                             id: item.id,
                             checked: !item.checked,
-                          }),
+                          })
                         );
                       }}
                     />
@@ -104,7 +99,7 @@ export default function Editor(props: IProps) {
                         dispatch(
                           actions.deleteTodoItem({
                             id: item.id,
-                          }),
+                          })
                         );
                       }}
                     >
@@ -122,7 +117,7 @@ export default function Editor(props: IProps) {
                               actions.updateTodoItem({
                                 id: item.id,
                                 text: editedText,
-                              }),
+                              })
                             );
                             setEditingItemId(null);
                           }
@@ -163,7 +158,7 @@ export default function Editor(props: IProps) {
                       dispatch(
                         actions.deleteTodoItem({
                           id: item.id,
-                        }),
+                        })
                       );
                     });
                   }}

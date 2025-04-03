@@ -1,17 +1,8 @@
-import { ExtendedEditor, EditorContextProps } from "document-model-libs";
-import Editor from "./editor";
-import {
-  ToDoListState,
-  ToDoListAction,
-  ToDoListLocalState,
-} from "../../document-models/to-do-list";
+import type { EditorModule } from "document-model";
+import Editor from "./editor.js";
+import type { ToDoListDocument } from "../../document-models/to-do-list/index.js";
 
-export const module: ExtendedEditor<
-  ToDoListState,
-  ToDoListAction,
-  ToDoListLocalState,
-  EditorContextProps
-> = {
+export const module: EditorModule<ToDoListDocument> = {
   Component: Editor,
   documentTypes: ["powerhouse/todolist"],
   config: {
