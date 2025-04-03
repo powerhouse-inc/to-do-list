@@ -5,8 +5,9 @@ import {
   actions,
   type ToDoItem,
 } from "../../document-models/to-do-list/index.js";
-import { StringField } from "@powerhousedao/design-system/scalars";
-
+import { InputField } from "./components/inputField.js";
+import { Button } from "@powerhousedao/design-system";
+import { Checkbox } from "@powerhousedao/design-system/scalars";
 export type IProps = EditorProps<ToDoListDocument>;
 
 export default function Editor(props: IProps) {
@@ -28,130 +29,185 @@ export default function Editor(props: IProps) {
     <>
       <div>
         <div>
-          <h1>To-do List</h1>
-          <br />
-          <input
-            key="doc-title"
-            placeholder="Insert task here..."
-            onChange={(value) => {
-              setTodoItem(value.target.value);
-            }}
-            value={todoItem}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                dispatch(
-                  actions.addTodoItem({
-                    id: Math.random().toString(),
-                    text: todoItem,
-                  })
-                );
-                setTodoItem("");
-              }
-            }}
-          />
-          <button
-            onClick={() => {
-              dispatch(
-                actions.addTodoItem({
-                  id: Math.random().toString(),
-                  text: todoItem,
-                })
-              );
-              setTodoItem("");
+          <h1
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "2em",
+              marginBottom: "20px",
             }}
           >
-            Add
-          </button>
+            My To-Do List
+          </h1>
           <br />
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "space-evenly",
+              flexWrap: "wrap",
+              width: "100%",
+              gap: "20px",
             }}
           >
-            <div style={{ flex: 2, marginTop: "20px" }}>
-              {sortedItems.map((item: ToDoItem, index: number) => (
-                <ul key={index}>
-                  <li
+            <div
+              style={{
+                flex: "1 1 300px",
+                minWidth: "300px",
+                maxWidth: "600px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <div style={{ flex: 1 }}>
+                  <InputField
+                    label="Add a new item"
+                    input={todoItem}
+                    handleInputChange={(e) => {
+                      setTodoItem(e.target.value);
+                    }}
+                    value={todoItem}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        dispatch(
+                          actions.addTodoItem({
+                            id: Math.random().toString(),
+                            text: todoItem,
+                          })
+                        );
+                        setTodoItem("");
+                      }
+                    }}
+                  />
+                </div>
+                <Button
+                  style={{
+                    margin: "27px 0 0 0",
+                    padding: "0px 20px",
+                    height: "36px",
+                    minWidth: "80px",
+                    cursor: "pointer",
+                  }}
+                  size="small"
+                  onClick={() => {
+                    dispatch(
+                      actions.addTodoItem({
+                        id: Math.random().toString(),
+                        text: todoItem,
+                      })
+                    );
+                    setTodoItem("");
+                  }}
+                >
+                  Add
+                </Button>
+              </div>
+            </div>
+            {state.items.length >= 2 && (
+              <div
+                style={{
+                  flex: "1 1 300px",
+                  minWidth: "300px",
+                  maxWidth: "400px",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "27px",
+                  gap: "12px",
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    padding: "8px 12px",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                    minWidth: "180px",
+                  }}
+                >
+                  <div
                     style={{
-                      display: "flex",
-                      alignItems: "center",
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gap: "12px",
                     }}
                   >
-                    <input
-                      type="checkbox"
-                      checked={item.checked}
-                      onClick={() => {
-                        dispatch(
-                          actions.updateTodoItem({
-                            id: item.id,
-                            checked: !item.checked,
-                          })
-                        );
-                      }}
-                    />
-                    <button
-                      style={{
-                        color: "red",
-                        padding: "0px 5px 0px 5px",
-                      }}
-                      onClick={() => {
-                        dispatch(
-                          actions.deleteTodoItem({
-                            id: item.id,
-                          })
-                        );
-                      }}
-                    >
-                      Remove
-                    </button>
-                    {editingItemId === item.id ? (
-                      <input
-                        style={{ width: "100%" }}
-                        type="text"
-                        value={editedText}
-                        onChange={(e) => setEditedText(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            dispatch(
-                              actions.updateTodoItem({
-                                id: item.id,
-                                text: editedText,
-                              })
-                            );
-                            setEditingItemId(null);
-                          }
-                        }}
-                        autoFocus
-                      />
-                    ) : (
-                      <span
+                    <div>
+                      <div
                         style={{
-                          fontSize: "15px",
-                          marginLeft: "10px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setEditingItemId(item.id);
-                          setEditedText(item.text);
+                          fontSize: "12px",
+                          color: "#64748b",
+                          marginBottom: "2px",
                         }}
                       >
-                        {item.text}
-                      </span>
-                    )}
-                  </li>
-                </ul>
-              ))}
-            </div>
-            <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-              {state.items.length >= 2 && (
-                <button
+                        Total
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#1e293b",
+                        }}
+                      >
+                        {state.stats.total}
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: "#64748b",
+                          marginBottom: "2px",
+                        }}
+                      >
+                        Checked
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#16a34a",
+                        }}
+                      >
+                        {state.stats.checked}
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: "#64748b",
+                          marginBottom: "2px",
+                        }}
+                      >
+                        Pending
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#ea580c",
+                        }}
+                      >
+                        {state.stats.unchecked}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  size="small"
                   style={{
                     backgroundColor: "#ff4d4d",
                     color: "white",
                     border: "none",
                     padding: "5px 10px",
                     cursor: "pointer",
+                    height: "36px",
+                    alignSelf: "center",
                   }}
                   onClick={() => {
                     state.items.forEach((item) => {
@@ -163,18 +219,116 @@ export default function Editor(props: IProps) {
                     });
                   }}
                 >
-                  Remove All Todos
-                </button>
-              )}
-            </div>
+                  Remove All
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
 
-            <div style={{ flex: 1, paddingLeft: "10px" }}>
-              <span>Total: {state.stats.total}</span>
-              <br />
-              <span>Checked: {state.stats.checked}</span>
-              <br />
-              <span>Unchecked: {state.stats.unchecked}</span>
-            </div>
+        <br />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              marginTop: "20px",
+              width: "100%",
+              maxWidth: "800px",
+            }}
+          >
+            {sortedItems.map((item: ToDoItem, index: number) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "12px 16px",
+                  marginBottom: "8px",
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                  transition: "all 0.2s ease",
+                  gap: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    minWidth: "100px",
+                  }}
+                >
+                  <Checkbox
+                    value={item.checked}
+                    onChange={(e: boolean) => {
+                      dispatch(
+                        actions.updateTodoItem({ id: item.id, checked: e })
+                      );
+                    }}
+                  />
+                  <Button
+                    style={{
+                      color: "#ff4d4d",
+                      padding: "4px 8px",
+                      minWidth: "auto",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      dispatch(
+                        actions.deleteTodoItem({
+                          id: item.id,
+                        })
+                      );
+                    }}
+                  >
+                    Remove
+                  </Button>
+                </div>
+
+                <div style={{ flex: 1 }}>
+                  {editingItemId === item.id ? (
+                    <InputField
+                      input={editedText}
+                      value={editedText}
+                      handleInputChange={(e) => setEditedText(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          dispatch(
+                            actions.updateTodoItem({
+                              id: item.id,
+                              text: editedText,
+                            })
+                          );
+                          setEditingItemId(null);
+                        }
+                      }}
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: "15px",
+                        cursor: "pointer",
+                        textDecoration: item.checked ? "line-through" : "none",
+                        color: item.checked ? "#94a3b8" : "#1e293b",
+                      }}
+                      onClick={() => {
+                        setEditingItemId(item.id);
+                        setEditedText(item.text);
+                      }}
+                    >
+                      {item.text}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
